@@ -1,7 +1,7 @@
 import router from "../helpers/router.js";
 import mongoose from "mongoose"
 import type { Request , Response } from "express";
-import type { 
+import type {
     ResponseBody , 
     ResponseBodySuccess 
 } from "../types/interfaces.js";
