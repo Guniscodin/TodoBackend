@@ -8,7 +8,7 @@ import type { Response , Request } from "express";
 import type { ResponseBody , ResponseBodySuccess , TaskBody } from "../types/interfaces.js";
 
 export const getRouter = router.get(
-    "/gettasks/:userId",
+    "/tasks/:userId",
     rateLimiter(60,1),
     verifyToken,
     verifyUser,
@@ -19,13 +19,7 @@ export const getRouter = router.get(
         },ResponseBody | ResponseBodySuccess<TaskBody[]>>,
         res: Response<ResponseBody | ResponseBodySuccess<TaskBody[]>>
     )=>{
-        const currentUser = req.user?.userId
-        if (!currentUser){
-            return res.status(400).json({
-                message: "[Error]: Missing Token or User id",
-                success: false
-            })
-        }
+        const currentUser = req.user!.userId
         try{
             const userTasks = await Task.find({
                 userId: currentUser

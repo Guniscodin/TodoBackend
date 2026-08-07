@@ -20,13 +20,7 @@ export const addtaskRouter = router.post(
     async (
         req: Request<{},ResponseBody | ResponseBodySuccess , TaskBody>, 
         res: Response<ResponseBody | ResponseBodySuccess<TaskBody>>) =>{
-            const currentUser = req.user?.userId
-            if (!currentUser){
-                return res.status(400).json({
-                    message: "[Error]: Missing token or Invalid token!",
-                    success: false
-                })
-            }
+            const currentUser = req.user!.userId
             const title = req.body.title.trim()
             const label = req.body.label?.trim() ?? "";
             const content = req.body.content

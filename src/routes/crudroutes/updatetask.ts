@@ -6,6 +6,7 @@ import { checkTokenType } from "../../middlewares/checktokentype.js";
 import type { ResponseBody , ResponseBodySuccess , TaskBody } from "../types/interfaces.js";
 import type { Request , Response } from "express";
 import Task from "../../schemas/task.js";
+import mongoose from "mongoose";
 
 export const updateRouter = router.patch(
     "/updatetask/:taskId",
@@ -19,13 +20,13 @@ export const updateRouter = router.patch(
         },ResponseBody | ResponseBodySuccess , TaskBody>,
         res: Response<ResponseBody | ResponseBodySuccess<TaskBody>>
     )=>{
-        const taskId = req.params.taskId
-        const currentUser = req.user?.userId
+        const taskId = req.params.taskId.trim()
+        const currentUser = req.user!.userId
         const {title , content , label , priority , completed} = req.body
         const titleTrimmed = title.trim()
         const contentTrimmed = content.trim()
         const labelTrimmed = label.trim() || ""
-        if (!taskId || !currentUser){
+        if (!mongoose.Types.ObjectId.isValid(taskId)){
             return res.status(400).json({
                 message: "[Error]: Missing Task id or User id!",
                 success: false

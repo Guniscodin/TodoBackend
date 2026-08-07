@@ -22,9 +22,9 @@ export const deleteRouter = router.delete(
         > ,
         res: Response<ResponseBody | ResponseBodySuccess>
     )=>{
-        const currentUser = req.user?.userId || "";
-        const taskId = req.params.userId
-        if(!currentUser.trim() || !taskId.trim()){
+        const currentUser = req.user!.userId
+        const taskId = req.params.userId.trim()
+        if(!mongoose.Types.ObjectId.isValid(taskId)){
             return res.status(400).json({
                 message: "[Error]: Missing or invalid Id!",
                 success: false

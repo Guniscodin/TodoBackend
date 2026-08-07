@@ -1,6 +1,7 @@
 import type { Request , Response , NextFunction } from "express";
 import type { ResponseBody } from "../routes/types/interfaces.js";
 import jwt from "jsonwebtoken"
+import { Types } from "mongoose";
 import type { JwtPayload } from "jsonwebtoken";
 
 interface Payload extends JwtPayload {
@@ -28,6 +29,14 @@ export const verifyToken = (
     let payload: Payload
     try{
         payload = jwt.verify(token , secret) as Payload
+        if (!payload.userId.trim() || 
+        !Types.ObjectId.isValid(payload.userId.trim())
+        ){
+            return res.status(400).json({
+                message: "[Error]: Invalid Token payload",
+                success: false
+            })
+        }
     }catch(err){
         console.error(err)
         return res.status(500).json({
