@@ -4,12 +4,17 @@ import { signUpCheck } from "../helpers/inputchecks.js";
 import { rateLimiter } from "../../middlewares/ratelimiter.js"
 import User from "../../schemas/user.js";
 import type { Request , Response } from "express";
-import type { IUser , ResponseBody } from "../types/interfaces.js";
+import type { 
+    ResponseBody , 
+    SignUpBody 
+} from "../types/interfaces.js";
 
-type SignUpBody = Omit<IUser , "_Id">
-
-export const signInRouter = router.post("/signup",rateLimiter(3,15) , async (
-    req: Request<{}, ResponseBody , SignUpBody> ,
+export const signInRouter = router.post(
+    "/signup",
+    rateLimiter(3,15) , 
+    async (
+    req: Request<{}, 
+    ResponseBody , SignUpBody> ,
     res: Response<ResponseBody>)=>
         {
     const {email , user , password} = req.body

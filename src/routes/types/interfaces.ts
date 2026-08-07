@@ -5,6 +5,12 @@ import Task from "../../schemas/task.js"
 export type IUser = InferSchemaType<typeof User>
 export type ITask = InferSchemaType<typeof Task>
 
+export type SignUpBody = {
+    email: string
+    user: string
+    password: string
+}
+
 export interface ResponseBodySuccess<T = object> {
     message: string
     success: boolean

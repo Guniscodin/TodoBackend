@@ -5,13 +5,14 @@ import gettoken from "../helpers/getjwttoken.js"
 import { LogInCheck } from "../helpers/inputchecks.js"
 import { rateLimiter } from "../../middlewares/ratelimiter.js"
 import type { Request , Response } from "express"
-import type { ResponseBodySuccess , 
-    ResponseBody , IUser } from "../types/interfaces.js"
+import type {
+    ResponseBodySuccess , 
+    ResponseBody , 
+    IUser ,
+    SignUpBody
+} from "../types/interfaces.js"
 
-interface RequestBody {
-    email: string
-    password: string
-}
+type RequestBody = Pick<SignUpBody, "email" | "password">
 type LoginData = Omit<IUser , "password" | "tasks">
 type responseBody = ResponseBodySuccess<{
     token: string
@@ -19,10 +20,16 @@ type responseBody = ResponseBodySuccess<{
     userData: LoginData
 }>
 
-export const logInRouter = router.post("/login",rateLimiter(5,5), async (
+export const logInRouter = router.post(
+    "/login",
+    rateLimiter(5,5),
+    async (
     req: Request<{},{},RequestBody> ,
     res: Response<ResponseBody | responseBody>)=>{
-        const check = LogInCheck(req.body.email , req.body.password)
+        const check = LogInCheck(
+            req.body.email , 
+            req.body.password
+        )
         if (!check.success){
             return res.status(400).json({
                 message: check.message,
@@ -30,7 +37,9 @@ export const logInRouter = router.post("/login",rateLimiter(5,5), async (
             })
         }
         try{
-            const user = await User.findOne({email: check.email})
+            const user = await User.findOne(
+                {email: check.email}
+            )
             .lean()
             if (!user){
                 return res.status(404).json({
@@ -50,7 +59,10 @@ export const logInRouter = router.post("/login",rateLimiter(5,5), async (
             }
             const {password: _ , ...safestuff} = user
             const token = gettoken(user.user,"access")
-            const refreshToken = gettoken(user.user , "refresh")
+            const refreshToken = gettoken(
+                user.user , 
+                "refresh"
+            )
             if (!token.token || !refreshToken.token){
                 return res.status(
                     500
