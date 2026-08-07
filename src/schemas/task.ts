@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 import type { TaskBody } from "../routes/types/interfaces.js"
 import { PRIORITIES } from "../routes/types/interfaces.js"
-
 const taskSchema = new mongoose.Schema<TaskBody>({
     userId: {
         type: String,
@@ -37,5 +36,5 @@ const taskSchema = new mongoose.Schema<TaskBody>({
 },{
     timestamps: true
 })
-
+taskSchema.index({userId: 1 , _id: -1})
 export default mongoose.model("Tasks",taskSchema)

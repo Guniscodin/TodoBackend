@@ -1,18 +1,9 @@
-import type { Types } from "mongoose"
+import type { InferSchemaType } from "mongoose"
+import User from "../../schemas/user.js"
+import Task from "../../schemas/task.js"
 
-export interface IUser {
-    _id: Types.ObjectId
-    user: string
-    email: string
-    password: string
-    tasks: number
-}
-
-export interface MongooseMeta {
-    createdAt: Date
-    updatedAt: Date
-    __v: number
-}
+export type IUser = InferSchemaType<typeof User>
+export type ITask = InferSchemaType<typeof Task>
 
 export interface ResponseBodySuccess<T = object> {
     message: string
