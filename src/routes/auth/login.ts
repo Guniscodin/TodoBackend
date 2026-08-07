@@ -5,7 +5,8 @@ import gettoken from "../helpers/getjwttoken.js"
 import { LogInCheck } from "../helpers/inputchecks.js"
 import { rateLimiter } from "../../middlewares/ratelimiter.js"
 import type { Request , Response } from "express"
-import type { ResponseBodySuccess , ResponseBody , IUser } from "../types/interfaces.js"
+import type { ResponseBodySuccess , 
+    ResponseBody , IUser } from "../types/interfaces.js"
 
 interface RequestBody {
     email: string
