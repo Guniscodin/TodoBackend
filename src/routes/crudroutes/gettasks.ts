@@ -3,6 +3,7 @@ import Task from "../../schemas/task.js";
 import { verifyToken } from "../../middlewares/verifytoken.js";
 import { verifyUser } from "../../middlewares/verifyuser.js";
 import { rateLimiter } from "../../middlewares/ratelimiter.js";
+import { checkTokenType } from "../../middlewares/checktokentype.js";
 import type { Response , Request } from "express";
 import type { ResponseBody , ResponseBodySuccess , TaskBody } from "../types/interfaces.js";
 
@@ -11,6 +12,7 @@ export const getRouter = router.get(
     rateLimiter(60,1),
     verifyToken,
     verifyUser,
+    checkTokenType,
     async (
         req: Request<{
             userId: string

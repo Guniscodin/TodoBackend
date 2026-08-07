@@ -5,6 +5,7 @@ import type { ResponseBody , ResponseBodySuccess } from "../types/interfaces.js"
 import { verifyToken } from "../../middlewares/verifytoken.js";
 import { verifyUser } from "../../middlewares/verifyuser.js";
 import { rateLimiter } from "../../middlewares/ratelimiter.js";
+import { checkTokenType } from "../../middlewares/checktokentype.js";
 import Task from "../../schemas/task.js";
 import User from "../../schemas/user.js";
 
@@ -13,6 +14,7 @@ export const deleteRouter = router.delete(
     rateLimiter(30,1),
     verifyToken,
     verifyUser,
+    checkTokenType,
     async (
         req: Request<
         {userId: string} ,

@@ -6,6 +6,7 @@ import type { TaskBody } from "../types/interfaces.js";
 import { verifyToken } from "../../middlewares/verifytoken.js";
 import { verifyUser } from "../../middlewares/verifyuser.js";
 import { rateLimiter } from "../../middlewares/ratelimiter.js";
+import { checkTokenType } from "../../middlewares/checktokentype.js";
 import { checkTaskFields } from "../helpers/chectaskfields.js";
 import User from "../../schemas/user.js";
 import Task from "../../schemas/task.js";
@@ -15,6 +16,7 @@ export const addtaskRouter = router.post(
     rateLimiter(30,1),
     verifyToken,
     verifyUser,
+    checkTokenType,
     async (
         req: Request<{},ResponseBody | ResponseBodySuccess , TaskBody>, 
         res: Response<ResponseBody | ResponseBodySuccess<TaskBody>>) =>{
